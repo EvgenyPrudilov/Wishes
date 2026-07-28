@@ -1,0 +1,36 @@
+spring:
+  application:
+    name: auth-service
+#  profiles:
+#    active: dev
+
+  config:
+    import: "configserver:${SPRING_CLOUD_CONFIG_URI}"
+
+  datasource:
+    url: ${POSTGRES_DATASOURCE_URL:jdbc:postgresql://localhost:5454/cohenrol_auth_db}
+    username: ${POSTGRES_USER:cohenrol}
+    password: ${POSTGRES_PASSWORD:12345678}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+management:
+  endpoint:
+    refresh:
+      enabled: true
+    env:
+      show-values: always
+    configprops:
+      show-values: always
+  endpoints:
+    web:
+      exposure:
+        include: refresh

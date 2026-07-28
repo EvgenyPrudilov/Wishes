@@ -1,0 +1,18 @@
+server:
+  port: 8888
+
+spring:
+  application:
+    name: config-server
+  profiles:
+    active: native
+  cloud:
+    config:
+      server:
+        prefix: /api/v1/internal
+        native:
+          search-locations: file:/var/config-repo,file:/var/config-repo/{application}
+config:
+  watcher:
+    repo-path: "/var/config-repo"
+    refresh-url-template: "http://%s:8080/actuator/refresh"

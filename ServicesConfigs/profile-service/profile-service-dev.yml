@@ -1,0 +1,22 @@
+
+services:
+  logging:
+    name: ${EXPECTED_MAIN_LOGGING_SERVICE}
+    url: ${SPRING_LOGGING_SERVICE_URL_BASE}
+    endpoints:
+      log-event: ${LOGGING_SERVICE_PATH__LOG_EVENT}
+
+  auth:
+    name: ${EXPECTED_MAIN_ISSUER_OF_TOKENS}
+    url: ${SPRING_AUTHENTICATION_SERVICE_URL_BASE}
+    endpoints:
+      login: "${AUTHENTICATION_SERVICE_PATH__INTERNAL_LOGIN}/profile-service"
+
+app:
+  auth-server-credentials:
+    service-name: ${PROFILE_SERVICE_CREDENTIALS_NAME_FOR_AUTHENTICATION}
+    password: ${PROFILE_SERVICE_CREDENTIALS_PASSWORD_FOR_AUTHENTICATION}
+
+  user-access-token-expected-to-have:
+    issuer: ${EXPECTED_MAIN_ISSUER_OF_TOKENS}
+    audience: profile-service

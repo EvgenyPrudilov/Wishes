@@ -1,0 +1,13 @@
+include:
+  - docker-compose-auth.yml
+  - docker-compose-config.yml
+  - docker-compose-nginx.yml
+  - docker-compose-logging.yml
+
+volumes:
+  auth-db-data:
+  logging-db-data:
+
+#networks:
+#  wishes-network:
+#    name: wishes-shared-network

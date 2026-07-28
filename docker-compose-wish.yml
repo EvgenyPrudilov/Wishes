@@ -1,0 +1,39 @@
+services:
+  wish-service:
+    container_name: wishes-wish-service
+    build: ./Wish
+    depends_on:
+      wish-postgres-db:
+        condition: service_healthy
+#      auth-service:
+#        condition: service_started
+      config-service:
+        condition: service_healthy
+
+    env_file:
+      - shared.env
+      - .security/wish.env
+    environment:
+      POSTGRES_DATASOURCE_URL: jdbc:postgresql://wish-postgres-db:${DB_INNER_PORT}/cohenrol_wish_db
+#      SPRING_CLOUD_CONFIG_NAME: wish-service
+
+##################### DATABASE ########################################
+  wish-postgres-db:
+    container_name: wishes-wish-database
+    image: postgres:latest
+
+    env_file: shared.env
+    environment:
+      POSTGRES_DB: cohenrol_wish_db
+
+    ports:
+      - ${WISH_DB_EXTERNAL_PORT}
+
+    volumes:
+      - wish-db-data:/var/lib/postgresql
+
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U cohenrol -d cohenrol_wish_db" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5

@@ -1,0 +1,44 @@
+services:
+  auth-service:
+    container_name: wishes-auth-service
+    build: ./Authentication
+    depends_on:
+      config-service:
+        condition: service_healthy
+      auth-postgres-db:
+        condition: service_healthy
+      logging-service:
+        condition: service_started
+
+    ports:
+      - ${AUTHENTICATION_SERVICE_EXTERNAL_PORT}
+
+    volumes:
+      - ./.security/keystore.p12:/app/resources/keystore.p12:ro
+    env_file:
+      - shared.env
+      - .security/auth.env
+    environment:
+      POSTGRES_DATASOURCE_URL: jdbc:postgresql://auth-postgres-db:${DB_INNER_PORT}/cohenrol_auth_db
+#      SPRING_CLOUD_CONFIG_NAME: auth-service
+
+##################### DATABASE ########################################
+  auth-postgres-db:
+    container_name: wishes-auth-database
+    image: postgres:latest
+
+    env_file: shared.env
+    environment:
+      POSTGRES_DB: cohenrol_auth_db
+
+    ports:
+      - "${AUTHENTICATION_DB_EXTERNAL_PORT}"
+
+    volumes:
+      - auth-db-data:/var/lib/postgresql
+
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U cohenrol -d cohenrol_auth_db" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5

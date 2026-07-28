@@ -1,0 +1,26 @@
+
+app:
+  refresh-token:
+    path: "/api/v1/public/auth/refresh"
+    max-age-s: 604800
+  jwt:
+    common:
+      issuer: ${spring.application.name}
+      key-id: "auth-server-ec-key"
+      keystore:
+        location: ${AUTHENTICATION_SERVICE_JWT_KEYSTORE_LOCATION}
+        password: ${AUTHENTICATION_SERVICE_JWT_KEYSTORE_PASSWORD}
+        alias: ${AUTHENTICATION_SERVICE_JWT_KEYSTORE_ALIAS}
+    users:
+      expiration-ms: 900000
+      refresh-expiration-ms: 2592000000
+      access-key-audience: auth-service, profile-service, wish-service
+    services:
+      common:
+        expiration-ms: 3600000
+
+#      enrollment:
+#        access-key-audience: progress-service,course-service,enrollment-service
+#        name: ${ENROLLMENT_SERVICE_ID:enrollment-service}
+#        password: ${ENROLLMENT_SERVICE_PASSWORD:super-secret-password-for-enrollment}
+

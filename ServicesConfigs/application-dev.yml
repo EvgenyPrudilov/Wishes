@@ -1,0 +1,11 @@
+
+server:
+  port: ${SPRING_SERVICE_PORT:8080}
+
+logging:
+  level:
+    org.springframework.web.slider: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.springframework: INFO
+    org.springframework.web.client.RestClient: DEBUG
+    org.apache.hc.client5.http: DEBUG

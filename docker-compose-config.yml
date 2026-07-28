@@ -1,0 +1,16 @@
+services:
+  config-service:
+    container_name: wishes-config-service
+    build: ./Config
+    volumes:
+      - ./ServicesConfigs:/var/config-repo
+
+    environment:
+      # принудительно отключает интеграцию со Spring Cloud Bus - мы реализуем отправку самостоятельно
+      - SPRING_CLOUD_BUS_ENABLED=false
+
+    healthcheck:
+      test: [ "CMD-SHELL", "[ -f /tmp/healthy ] && exit 0; wget --no-verbose --tries=1 --spider http://localhost:8888/api/v1/internal/auth-service/default && touch /tmp/healthy" ]
+      interval: 5s
+      timeout: 3s
+      retries: 10

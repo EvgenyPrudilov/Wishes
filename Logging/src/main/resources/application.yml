@@ -1,0 +1,44 @@
+spring:
+  application:
+    name: logging-service
+  #  profiles:
+  #    active: dev
+  config:
+    import: "configserver:${SPRING_CLOUD_CONFIG_URI}"
+#  sql:
+#    init:
+#      mode: always
+
+  datasource:
+    url: ${POSTGRES_DATASOURCE_URL}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+#    defer-datasource-initialization: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: ${SPRING_AUTHENTICATION_SERVICE_JWK_URI}
+          jws-algorithms: ES256
+
+management:
+  endpoint:
+    refresh:
+      enabled: true
+    env:
+      show-values: always
+    configprops:
+      show-values: always
+  endpoints:
+    web:
+      exposure:
+        include: refresh

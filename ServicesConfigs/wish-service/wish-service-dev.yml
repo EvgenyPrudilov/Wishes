@@ -1,0 +1,33 @@
+
+services:
+  logging:
+    name: logging-service
+    url: ${SPRING_LOGGING_SERVICE_URL_BASE}
+    endpoints:
+      log-event: ${LOGGING_SERVICE_PATH__LOG_EVENT}
+    connect-timeout-ms: ${INTER_SERVICE_CONNECTION_TIMEOUT_MS}
+    read-timeout-ms: ${INTER_SERVICE_READ_TIMEOUT_MS}
+
+  profile:
+    name: profile-service
+    url: ${SPRING_PROFILE_SERVICE_URL_BASE}
+    endpoints:
+      check-friendship: ${PROFILE_SERVICE_PATH__FRIENDSHIP_CHECK}
+    connect-timeout-ms: ${INTER_SERVICE_CONNECTION_TIMEOUT_MS}
+    read-timeout-ms: ${INTER_SERVICE_READ_TIMEOUT_MS}
+
+  auth:
+    name: ${EXPECTED_MAIN_ISSUER_OF_TOKENS}
+    url: ${SPRING_AUTHENTICATION_SERVICE_URL_BASE}
+    endpoints:
+      login: "${AUTHENTICATION_SERVICE_PATH__INTERNAL_LOGIN}/wish-service"
+
+app:
+  auth-server-credentials:
+    service-name: ${WISH_SERVICE_CREDENTIALS_NAME_FOR_AUTHENTICATION}
+    password: ${WISH_SERVICE_CREDENTIALS_PASSWORD_FOR_AUTHENTICATION}
+
+  user-access-token-expected-to-have:
+    issuer: ${EXPECTED_MAIN_ISSUER_OF_TOKENS}
+    audience: wish-service
+

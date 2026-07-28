@@ -1,0 +1,39 @@
+services:
+  profile-service:
+    container_name: wishes-profile-service
+    build: ./Profile
+    depends_on:
+      profile-postgres-db:
+        condition: service_healthy
+#      auth-service:
+#        condition: service_started
+      config-service:
+        condition: service_healthy
+
+    env_file:
+      - shared.env
+      - .security/profile.env
+    environment:
+      POSTGRES_DATASOURCE_URL: jdbc:postgresql://profile-postgres-db:${DB_INNER_PORT}/cohenrol_profile_db
+#      SPRING_CLOUD_CONFIG_NAME: profile-service
+
+##################### DATABASE ########################################
+  profile-postgres-db:
+    container_name: wishes-profile-database
+    image: postgres:latest
+
+    env_file: shared.env
+    environment:
+      POSTGRES_DB: cohenrol_profile_db
+
+    ports:
+      - ${PROFILE_DB_EXTERNAL_PORT}
+
+    volumes:
+      - profile-db-data:/var/lib/postgresql
+
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U cohenrol -d cohenrol_profile_db" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
