@@ -8,7 +8,7 @@
 - **Система бронирования**: возможность анонимного или авторизованного резервирования подарков друзьями.
 
 ## Технологический стек
-- **Backend:** Java 21, Spring Boot 4.x, Spring Cloud Config
+- **Backend:** Java 21, Spring Boot 4.x, Spring Cloud Config, Spring Security
 - **Data Access:** Spring Data JPA, Hibernate, PostgreSQL
 - **Infrastructure:** Docker, Docker Compose, Nginx Gateway
 - **Utilities:** Lombok, Mapper
