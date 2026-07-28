@@ -12,7 +12,7 @@ services:
 
     env_file:
       - shared.env
-      - .security/auth.env
+      - .security/wish.env
     environment:
       POSTGRES_DATASOURCE_URL: jdbc:postgresql://wish-postgres-db:${DB_INNER_PORT}/cohenrol_wish_db
 #      SPRING_CLOUD_CONFIG_NAME: wish-service
