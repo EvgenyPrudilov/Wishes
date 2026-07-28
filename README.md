@@ -40,10 +40,11 @@ keytool -genkeypair \
   -noprompt
 ```
 
-2. Добавьте созданный пароль в ваш файл конфигурации `auth.env`:
+2. Добавьте использованный пароль в файл конфигурации `auth.env` с именем алиаса и расположением его:
 ```env
 AUTHENTICATION_SERVICE_JWT_KEYSTORE_PASSWORD=YOUR_SECRET_PASSWORD
 AUTHENTICATION_SERVICE_JWT_KEYSTORE_ALIAS=auth-server-ec
+AUTHENTICATION_SERVICE_JWT_KEYSTORE_LOCATION=file:/app/resources/keystore.p12
 ```
 
 ### 3. Запуск инфраструктуры
