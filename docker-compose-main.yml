@@ -3,6 +3,8 @@ include:
   - docker-compose-config.yml
   - docker-compose-nginx.yml
   - docker-compose-logging.yml
+  - docker-compose-profile.yml
+  - docker-compose-wish.yml
 
 volumes:
   auth-db-data:
