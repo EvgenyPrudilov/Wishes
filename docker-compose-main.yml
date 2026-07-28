@@ -7,6 +7,8 @@ include:
 volumes:
   auth-db-data:
   logging-db-data:
+  wish-db-data:
+  profile-db-data:
 
 #networks:
 #  wishes-network:
