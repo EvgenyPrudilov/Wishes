@@ -12,3 +12,5 @@ services:
       - auth-service
       - logging-service
       - config-service
+      - wish-service
+      - profile-service
