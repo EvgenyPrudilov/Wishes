@@ -11,6 +11,7 @@ volumes:
   logging-db-data:
   wish-db-data:
   profile-db-data:
+  image_data:
 
 #networks:
 #  wishes-network:

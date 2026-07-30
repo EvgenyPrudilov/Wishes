@@ -3,6 +3,7 @@ package ru.cohenrol.profile.domain;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.cohenrol.profile.domain.mapper.DomainMapper;
+import ru.cohenrol.profile.domain.service.ImageService;
 import ru.cohenrol.profile.domain.service.ItemService;
 import ru.cohenrol.profile.domain.service.WishlistService;
 import ru.cohenrol.profile.web.mapper.WebMapper;
@@ -17,6 +18,7 @@ public class ServicesGate {
     private final DomainMapper domainMapper;
     private final WishlistService wishlistService;
     private final ItemService itemService;
+    private final ImageService imageService;
 
     public GetWishlistResponseDto getWishlistById(UUID wishlistId) {
         return domainMapper.toGetWishlistResponseDto(wishlistService.getWishlistById(wishlistId));
@@ -84,5 +86,9 @@ public class ServicesGate {
 
     public void unreserveItemAsGuest(UUID wishlistId, UUID itemId) {
         itemService.unreserveItemAsGuest(wishlistId, itemId);
+    }
+
+    public void uploadImage(UUID authorizedUserId, UUID wishlistId, UUID itemId, UploadImageRequestDto imageRequestDto) {
+        imageService.uploadImage(authorizedUserId, wishlistId, itemId, imageRequestDto.getFile());
     }
 }

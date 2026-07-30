@@ -20,6 +20,7 @@ services:
       - .security/auth.env
     environment:
       POSTGRES_DATASOURCE_URL: jdbc:postgresql://auth-postgres-db:${DB_INNER_PORT}/cohenrol_auth_db
+
 #      SPRING_CLOUD_CONFIG_NAME: auth-service
 
 ##################### DATABASE ########################################

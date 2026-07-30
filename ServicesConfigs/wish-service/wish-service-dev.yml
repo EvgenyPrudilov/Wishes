@@ -31,3 +31,5 @@ app:
     issuer: ${EXPECTED_MAIN_ISSUER_OF_TOKENS}
     audience: wish-service
 
+  image-upload-path: ${WISH_SERVICE_IMAGE_UPLOAD_BASE}
+

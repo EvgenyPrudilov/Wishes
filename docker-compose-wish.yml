@@ -10,6 +10,9 @@ services:
       config-service:
         condition: service_healthy
 
+    volumes:
+      - image_data:${WISH_SERVICE_IMAGE_UPLOAD_BASE}
+
     env_file:
       - shared.env
       - .security/wish.env

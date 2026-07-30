@@ -10,7 +10,7 @@
     </parent>
 
     <groupId>ru.cohenrol.wishes</groupId>
-    <artifactId>authentication-service</artifactId>
+    <artifactId>Authentication</artifactId>
     <version>0.0.1</version>
 
     <properties>
