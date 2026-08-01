@@ -26,4 +26,11 @@ public interface WebMapper {
         }
         return friends.map(this::toShortDto);
     }
+
+    default Page<UserProfileResponseDto> mapPageProfile(Page<UserProfile> friends) {
+        if (friends == null) {
+            return null;
+        }
+        return friends.map(this::toDto);
+    }
 }

@@ -32,7 +32,7 @@ public interface DomainMapper {
     WishlistSettingsUpdateRequest toWishlistSettingsUpdateRequest(WishlistSettingsUpdateRequestDto wishlistSettingsUpdateRequestDto);
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "wishlistEntity", ignore = true)
+    @Mapping(target = "wishlist", ignore = true)
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateSettingsFromDto(WishlistSettingsUpdateRequest dto, @MappingTarget WishlistSettingsEntity settings);
 
@@ -47,14 +47,14 @@ public interface DomainMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "itemId", ignore = true) // Генерируется дефолтным UUID.randomUUID()
-    @Mapping(target = "wishlistEntity", ignore = true)
+    @Mapping(target = "wishlist", ignore = true)
     @Mapping(target = "reserved", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     ItemEntity toItemEntity(ItemCreateRequestDto dto);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "itemId", ignore = true)
-    @Mapping(target = "wishlistEntity", ignore = true)
+    @Mapping(target = "wishlist", ignore = true)
     @Mapping(target = "reserved", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)

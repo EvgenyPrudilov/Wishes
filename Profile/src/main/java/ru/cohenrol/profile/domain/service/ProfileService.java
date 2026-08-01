@@ -26,7 +26,7 @@ public class ProfileService {
             .orElseThrow(() -> new UserNotFoundException(currentUserId));
 
         return UserProfile.builder()
-            .id(user.getId())
+            .userId(user.getUserId())
             .name(user.getName())
             .friendsCount(user.getFriendsCount())
             .build();

@@ -24,7 +24,7 @@ public class ItemEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "wishlist_id", nullable = false)
-    private WishlistEntity wishlistEntity;
+    private WishlistEntity wishlist;
 
     @Column(columnDefinition = "TEXT", nullable = false)
     private String title;

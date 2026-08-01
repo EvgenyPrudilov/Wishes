@@ -38,7 +38,7 @@ public class ImageService {
     private final ProfileServiceClient profileServiceClient;
     private final ItemService itemService;
 
-    @Value("${image-upload-path}")
+    @Value("${app.image-upload-path}")
     private String uploadDir;
 
     @Transactional

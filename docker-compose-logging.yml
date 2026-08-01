@@ -14,8 +14,9 @@ services:
       - ${LOGGING_SERVICE_EXTERNAL_PORT}
 
     env_file:
-      - shared.env
+      - .env
       - .security/logging.env
+
     environment:
       POSTGRES_DATASOURCE_URL: jdbc:postgresql://logging-postgres-db:${DB_INNER_PORT}/cohenrol_logging_db
 #      SPRING_CLOUD_CONFIG_NAME: logging-service
@@ -25,7 +26,7 @@ services:
     container_name: wishes-logging-database
     image: postgres:latest
 
-    env_file: shared.env
+    env_file: .env
     environment:
       POSTGRES_DB: cohenrol_logging_db
 

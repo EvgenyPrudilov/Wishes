@@ -18,6 +18,10 @@ app:
     services:
       common:
         expiration-ms: 3600000
+      wish:
+        access-key-audience: profile-service, logging-service, auth-service
+#        name: ${ENROLLMENT_SERVICE_ID:enrollment-service}
+#        password: ${ENROLLMENT_SERVICE_PASSWORD:super-secret-password-for-enrollment}
 
 #      enrollment:
 #        access-key-audience: progress-service,course-service,enrollment-service

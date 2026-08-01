@@ -16,8 +16,9 @@ services:
     volumes:
       - ./.security/keystore.p12:/app/resources/keystore.p12:ro
     env_file:
-      - shared.env
+      - .env
       - .security/auth.env
+
     environment:
       POSTGRES_DATASOURCE_URL: jdbc:postgresql://auth-postgres-db:${DB_INNER_PORT}/cohenrol_auth_db
 
@@ -28,7 +29,7 @@ services:
     container_name: wishes-auth-database
     image: postgres:latest
 
-    env_file: shared.env
+    env_file: .env
     environment:
       POSTGRES_DB: cohenrol_auth_db
 

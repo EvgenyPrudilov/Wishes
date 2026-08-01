@@ -25,9 +25,10 @@ public enum LogReason {
 
     public static LogReason getLogReason(ProfileException ex) {
         return switch (ex) {
-            case ProfileAlreadyCancelledException e -> INTERNAL_ENROLLMENT_ALREADY_CANCELLED_ERROR;
+//            case ProfileAlreadyCancelledException e -> INTERNAL_ENROLLMENT_ALREADY_CANCELLED_ERROR;
             case RelationAlreadyExistsException e -> INTERNAL_ENROLLMENT_ALREADY_EXISTS_ERROR;
             case UserNotFoundException e -> INTERNAL_ENROLLMENT_NOT_FOUND_ERROR;
+            default -> throw new IllegalStateException("Unexpected value: " + ex);
         };
     }
 }

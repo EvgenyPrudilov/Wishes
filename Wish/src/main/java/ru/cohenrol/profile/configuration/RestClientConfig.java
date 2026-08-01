@@ -10,7 +10,7 @@ import org.springframework.web.client.RestClient;
 @Configuration
 public class RestClientConfig {
 
-    @Value("${services.profile.base-url}")
+    @Value("${services.profile.url}")
     private String profileBaseUrl;
     @Value("${services.profile.connect-timeout-ms}")
     private int connectTimeout;

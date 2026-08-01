@@ -14,7 +14,7 @@ services:
       - image_data:${WISH_SERVICE_IMAGE_UPLOAD_BASE}
 
     env_file:
-      - shared.env
+      - .env
       - .security/wish.env
     environment:
       POSTGRES_DATASOURCE_URL: jdbc:postgresql://wish-postgres-db:${DB_INNER_PORT}/cohenrol_wish_db
@@ -25,7 +25,10 @@ services:
     container_name: wishes-wish-database
     image: postgres:latest
 
-    env_file: shared.env
+    env_file:
+      - .env
+      - .security/wish.env
+
     environment:
       POSTGRES_DB: cohenrol_wish_db
 

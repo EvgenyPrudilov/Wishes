@@ -21,7 +21,7 @@ public class WishlistService {
     @Transactional
     public WishlistEntity create(UUID authorizedUserId, WishlistEntity wishlist) {
         WishlistSettingsEntity settings = new WishlistSettingsEntity();
-        settings.setWishlistEntity(wishlist);
+        settings.setWishlist(wishlist);
         wishlist.setSettings(settings);
         wishlist.setUserId(authorizedUserId);
         return wishlistRepository.save(wishlist);

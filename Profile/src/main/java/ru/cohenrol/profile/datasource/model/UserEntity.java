@@ -19,6 +19,9 @@ public class UserEntity {
     @Column(name = "id", updatable = false, nullable = false)
     private Long id;
 
+    @Column(name = "user_id", unique = true, nullable = false)
+    private UUID userId;
+
     @Column(nullable = false, unique = true, length = 50)
     private String name;
 

@@ -6,6 +6,7 @@ target/
 
 **/target/
 
+.security/**.env
 # Игнорируем файлы хранилищ ключей
 *.p12
 *.jks

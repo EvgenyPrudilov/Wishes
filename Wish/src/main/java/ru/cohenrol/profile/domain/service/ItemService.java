@@ -28,7 +28,7 @@ public class ItemService {
     public ItemEntity getAndValidateItem(UUID wishlistId, UUID itemId) {
         ItemEntity item = itemRepository.findByItemId(itemId)
             .orElseThrow(() -> new IllegalArgumentException("Item not found"));
-        if (!item.getWishlistEntity().getWishlistId().equals(wishlistId)) {
+        if (!item.getWishlist().getWishlistId().equals(wishlistId)) {
             throw new IllegalArgumentException("Item does not belong to this wishlist");
         }
         return item;
@@ -55,7 +55,7 @@ public class ItemService {
     public void addItem(UUID authorizedUserId, UUID wishlistId, ItemCreateRequestDto dto) {
         WishlistEntity wishlist = wishlistService.getAndValidateOwner(authorizedUserId, wishlistId);
         ItemEntity item = domainMapper.toItemEntity(dto);
-        item.setWishlistEntity(wishlist);
+        item.setWishlist(wishlist);
         itemRepository.save(item);
     }
 
@@ -97,7 +97,7 @@ public class ItemService {
             throw new IllegalStateException("Item already reserved");
         }
 
-        WishlistEntity wishlist = item.getWishlistEntity();
+        WishlistEntity wishlist = item.getWishlist();
         WishlistSettingsEntity settings = wishlist.getSettings();
         if (settings.getBookingPrivacy() == BookingPermission.FRIENDS) {
             if (authorizedUserId == null || profileServiceClient.checkFriendship(authorizedUserId, wishlist.getUserId())) {
@@ -120,7 +120,7 @@ public class ItemService {
             throw new IllegalStateException("Item not reserved");
         }
 
-        WishlistEntity wishlist = item.getWishlistEntity();
+        WishlistEntity wishlist = item.getWishlist();
         WishlistSettingsEntity settings = wishlist.getSettings();
         if (settings.getBookingPrivacy() == BookingPermission.FRIENDS) {
             if (authorizedUserId == null || authorizedUserId != item.getReservedBy()) {

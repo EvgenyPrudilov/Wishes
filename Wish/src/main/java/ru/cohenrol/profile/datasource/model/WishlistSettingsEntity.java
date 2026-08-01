@@ -20,7 +20,7 @@ public class WishlistSettingsEntity {
     @OneToOne(fetch = FetchType.LAZY)
     @MapsId // Указывает JPA использовать первичный ключ Wishlist как PK и FK одновременно
     @JoinColumn(name = "wishlist_id")
-    private WishlistEntity wishlistEntity;
+    private WishlistEntity wishlist;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "visibility_mode", nullable = false)

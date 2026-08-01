@@ -76,7 +76,7 @@ public class FriendshipService {
         FriendshipEntity relation = friendshipRepository.findRelation(currentUserId, requesterId)
             .orElseThrow(() -> new FriendRequestNotFoundException(requesterId));
 
-        if (!relation.getFriend().getId().equals(currentUserId)) {
+        if (!relation.getFriend().getUserId().equals(currentUserId)) {
             throw new IllegalArgumentException("Only the recipient can accept a friend request");
         }
 
@@ -87,8 +87,8 @@ public class FriendshipService {
         relation.setStatus(FriendshipStatus.ACCEPTED);
         friendshipRepository.save(relation);
 
-        userRepository.updateFriendsCount(relation.getUser().getId(), 1);
-        userRepository.updateFriendsCount(relation.getFriend().getId(), 1);
+        userRepository.updateFriendsCount(relation.getUser().getUserId(), 1);
+        userRepository.updateFriendsCount(relation.getFriend().getUserId(), 1);
     }
 
     @Transactional
@@ -101,8 +101,8 @@ public class FriendshipService {
             throw new FriendshipNotFoundException(currentUserId, targetId);
         }
 
-        userRepository.updateFriendsCount(relation.getUser().getId(), -1);
-        userRepository.updateFriendsCount(relation.getFriend().getId(), -1);
+        userRepository.updateFriendsCount(relation.getUser().getUserId(), -1);
+        userRepository.updateFriendsCount(relation.getFriend().getUserId(), -1);
         friendshipRepository.delete(relation);
     }
 

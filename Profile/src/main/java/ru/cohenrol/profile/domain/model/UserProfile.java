@@ -14,7 +14,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserProfile {
-    private UUID id;
+    private UUID userId;
     private String name;
     private int friendsCount;
 }

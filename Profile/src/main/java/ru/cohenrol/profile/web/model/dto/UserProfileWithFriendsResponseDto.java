@@ -7,7 +7,7 @@ import java.util.UUID;
 
 @Data
 public class UserProfileWithFriendsResponseDto {
-    private UUID id;
+    private UUID userId;
     private String name;
     private int friendsCount;
     private Page<UserProfileResponseDto> friends;
