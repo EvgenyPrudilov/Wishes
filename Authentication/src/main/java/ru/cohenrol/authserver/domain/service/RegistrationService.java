@@ -13,6 +13,8 @@ import ru.cohenrol.authserver.domain.model.RegisterRequest;
 import ru.cohenrol.authserver.domain.model.User;
 import ru.cohenrol.authserver.web.mapper.WebMappers;
 
+import java.util.UUID;
+
 @Service
 @RequiredArgsConstructor
 public class RegistrationService {
@@ -36,6 +38,7 @@ public class RegistrationService {
         String hashedPassword = passwordEncoder.encode(request.getPassword());
         user.setPassword(hashedPassword);
         user.setEnabled(true);
+        user.setUuid(UUID.randomUUID());
 
         // sendVerificationEmail(savedUser);
         User registeredUser = customUserRepository.save(user);

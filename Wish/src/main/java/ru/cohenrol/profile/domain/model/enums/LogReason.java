@@ -3,10 +3,9 @@ package ru.cohenrol.profile.domain.model.enums;
 import ru.cohenrol.profile.domain.exception.external.ExternalServiceRequestException;
 import ru.cohenrol.profile.domain.exception.external.LoggingServiceRequestException;
 import ru.cohenrol.profile.domain.exception.external.ProfileServiceRequestException;
-import ru.cohenrol.profile.domain.exception.inner.EnrollmentAlreadyCancelledException;
-import ru.cohenrol.profile.domain.exception.inner.EnrollmentAlreadyExistsException;
-import ru.cohenrol.profile.domain.exception.inner.EnrollmentException;
-import ru.cohenrol.profile.domain.exception.inner.EnrollmentNotFoundException;
+import ru.cohenrol.profile.domain.exception.inner.NotWishlistOwnerException;
+import ru.cohenrol.profile.domain.exception.inner.WishlistException;
+import ru.cohenrol.profile.domain.exception.inner.WishlistNotFoundException;
 
 public enum LogReason {
     COURSE_ENROLLMENT, COURSE_CANCELLATION,
@@ -26,11 +25,11 @@ public enum LogReason {
         };
     }
 
-    public static LogReason getLogReason(EnrollmentException ex) {
+    public static LogReason getLogReason(WishlistException ex) {
         return switch (ex) {
-            case EnrollmentAlreadyCancelledException e -> INTERNAL_ENROLLMENT_ALREADY_CANCELLED_ERROR;
-            case EnrollmentAlreadyExistsException e -> INTERNAL_ENROLLMENT_ALREADY_EXISTS_ERROR;
-            case EnrollmentNotFoundException e -> INTERNAL_ENROLLMENT_NOT_FOUND_ERROR;
+            case NotWishlistOwnerException e -> INTERNAL_ENROLLMENT_ALREADY_EXISTS_ERROR;
+            case WishlistNotFoundException e -> INTERNAL_ENROLLMENT_NOT_FOUND_ERROR;
+            default -> throw new IllegalStateException("Unexpected value: " + ex);
         };
     }
 }

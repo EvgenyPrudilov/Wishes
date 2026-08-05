@@ -6,10 +6,13 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.cohenrol.profile.datasource.model.WishlistEntity;
 import ru.cohenrol.profile.datasource.model.WishlistSettingsEntity;
 import ru.cohenrol.profile.datasource.repository.WishlistRepository;
+import ru.cohenrol.profile.domain.exception.inner.NotWishlistOwnerException;
+import ru.cohenrol.profile.domain.exception.inner.WishlistNotFoundException;
 import ru.cohenrol.profile.domain.mapper.DomainMapper;
 import ru.cohenrol.profile.domain.model.WishlistSettingsUpdateRequest;
 import ru.cohenrol.profile.domain.model.WishlistUpdateRequest;
 
+import java.time.Instant;
 import java.util.UUID;
 
 @Service
@@ -24,13 +27,15 @@ public class WishlistService {
         settings.setWishlist(wishlist);
         wishlist.setSettings(settings);
         wishlist.setUserId(authorizedUserId);
+        wishlist.setWishlistId(UUID.randomUUID());
+        wishlist.setCreatedAt(Instant.now());
         return wishlistRepository.save(wishlist);
     }
 
     @Transactional(readOnly = true)
     public WishlistEntity getWishlistById(UUID wishlistId) {
         return wishlistRepository.findByWishlistId(wishlistId)
-            .orElseThrow(() -> new IllegalArgumentException("Wishlist not found"));
+            .orElseThrow(WishlistNotFoundException::new);
     }
 
     @Transactional
@@ -64,16 +69,13 @@ public class WishlistService {
     public WishlistEntity getAndValidateOwner(UUID authorizedUserId, UUID wishlistId) {
         WishlistEntity wishlist = getWishlistById(wishlistId);
         if (!wishlist.getUserId().equals(authorizedUserId)) {
-            throw new SecurityException("Access denied: You are not the owner of this wishlist");
+            throw new NotWishlistOwnerException();
         }
         return wishlist;
     }
 
     @Transactional(readOnly = true)
     public void validateOwner(UUID authorizedUserId, UUID wishlistId) {
-        WishlistEntity wishlist = getWishlistById(wishlistId);
-        if (!wishlist.getUserId().equals(authorizedUserId)) {
-            throw new SecurityException("Access denied: You are not the owner of this wishlist");
-        }
+        getAndValidateOwner(authorizedUserId, wishlistId);
     }
 }

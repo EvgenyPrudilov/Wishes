@@ -17,8 +17,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import static ru.cohenrol.authserver.domain.enums.Role.ROLE_INTERNAL_SERVICE;
-import static ru.cohenrol.authserver.domain.enums.Role.ROLE_USER;
+import static ru.cohenrol.authserver.domain.enums.Role.INTERNAL_SERVICE;
+import static ru.cohenrol.authserver.domain.enums.Role.USER;
 
 @Component
 @RefreshScope
@@ -62,7 +62,7 @@ public class JwtProvider {
         }
     }
 
-    public String generateAccessToken(String userName) {
+    public String generateAccessToken(UUID userUuid) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + usersJwtExpirationMs);
 
@@ -72,8 +72,8 @@ public class JwtProvider {
             .and()
             .issuer(issuer)
             .audience().add(usersAccessKeyAudience).and()
-            .subject(userName)
-            .claims(Map.of("roles", List.of(ROLE_USER.name())))
+            .subject(userUuid.toString())
+            .claims(Map.of("roles", List.of(USER.name())))
             .issuedAt(now)
             .expiration(expiryDate)
             .signWith(privateKey, Jwts.SIG.ES256)
@@ -91,7 +91,7 @@ public class JwtProvider {
             .issuer(issuer)
             .audience().add(servicesAccessKeyAudience).and()
             .subject(service.getServiceName())
-            .claims(Map.of("roles", List.of(ROLE_INTERNAL_SERVICE.name())))
+            .claims(Map.of("roles", List.of(INTERNAL_SERVICE.name())))
             .issuedAt(now)
             .expiration(expiryDate)
             .signWith(privateKey, Jwts.SIG.ES256)

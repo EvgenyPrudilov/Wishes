@@ -20,7 +20,8 @@ public class ItemEntity {
     private Long id;
 
     @Column(name = "item_id", unique = true, nullable = false, updatable = false)
-    private UUID itemId = UUID.randomUUID();
+//    private UUID itemId = UUID.randomUUID();
+    private UUID itemId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "wishlist_id", nullable = false)

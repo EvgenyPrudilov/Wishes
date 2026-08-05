@@ -12,6 +12,7 @@ import org.springframework.security.oauth2.core.DelegatingOAuth2TokenValidator;
 import org.springframework.security.oauth2.core.OAuth2Error;
 import org.springframework.security.oauth2.core.OAuth2TokenValidator;
 import org.springframework.security.oauth2.core.OAuth2TokenValidatorResult;
+import org.springframework.security.oauth2.jose.jws.SignatureAlgorithm;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtValidators;
@@ -42,6 +43,15 @@ public class SecurityConfig {
                 .anyRequest().authenticated()
             )
             .oauth2ResourceServer(oauth2 -> oauth2
+                .authenticationEntryPoint((request, response, authException) -> {
+                    // Здесь вы увидите точный текст ошибки в консоли бэкенда
+                    System.err.println("Ошибка авторизации: " + authException.getMessage());
+                    authException.printStackTrace();
+
+                    response.setStatus(401);
+                    response.setContentType("application/json");
+                    response.getWriter().write("{\"error\": \"" + authException.getMessage() + "\"}");
+                })
                 .jwt(jwt -> jwt
                     .decoder(jwtDecoder()) // Подключаем кастомный декодер с валидаторами
                     .jwtAuthenticationConverter(jwtInstance -> {
@@ -64,7 +74,9 @@ public class SecurityConfig {
 
     @Bean
     public JwtDecoder jwtDecoder() {
-        NimbusJwtDecoder jwtDecoder = NimbusJwtDecoder.withJwkSetUri(this.jwkSetUri).build();
+        NimbusJwtDecoder jwtDecoder = NimbusJwtDecoder.withJwkSetUri(this.jwkSetUri)
+            .jwsAlgorithm(SignatureAlgorithm.ES256)
+            .build();
 
         OAuth2TokenValidator<Jwt> audienceValidator = token -> {
             // Безопасно проверяем, входит ли ваш конкретный сервис в список разрешенных

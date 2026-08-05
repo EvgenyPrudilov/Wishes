@@ -25,9 +25,9 @@ public class WishlistEntity {
     private Long id;
 
     @Column(name = "wishlist_id", unique = true, nullable = false)
-    private UUID wishlistId = UUID.randomUUID();
+    private UUID wishlistId;
 
-    @Column(name = "user_id", unique = true, nullable = false)
+    @Column(name = "user_id", nullable = false)
     private UUID userId;
 
     @Column(nullable = false, length = 100)
@@ -40,7 +40,7 @@ public class WishlistEntity {
     private LocalDate eventDate;
 
     @Column(name = "created_at", updatable = false)
-    private Instant createdAt = Instant.now();
+    private Instant createdAt;
 
     @OneToOne(mappedBy = "wishlist", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
     private WishlistSettingsEntity settings;

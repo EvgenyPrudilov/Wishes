@@ -14,12 +14,13 @@ import java.time.LocalDateTime;
 
 @Mapper(componentModel = "spring", imports = { LocalDateTime.class })
 public interface DomainMapper {
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "wishlistId", ignore = true) // Оставляем генерацию UUID.randomUUID()
-    @Mapping(target = "userId", ignore = true)     // Задается отдельно в сервисе из аргумента метода
-    @Mapping(target = "createdAt", ignore = true)  // Оставляем генерацию Instant.now()
-    @Mapping(target = "settings", ignore = true)   // Инициализируется вручную в сервисе
-    @Mapping(target = "itemEntities", ignore = true) // Оставляем пустой ArrayList
+//    @Mapping(target = "id", ignore = true)
+//    @Mapping(target = "wishlistId", ignore = true) // Оставляем генерацию UUID.randomUUID()
+//    @Mapping(target = "userId", ignore = true)     // Задается отдельно в сервисе из аргумента метода
+//    @Mapping(target = "createdAt", ignore = true)  // Оставляем генерацию Instant.now()
+//    @Mapping(target = "settings", ignore = true)   // Инициализируется вручную в сервисе
+//    @Mapping(target = "itemEntities", ignore = true) // Оставляем пустой ArrayList
+    @BeanMapping(unmappedTargetPolicy = ReportingPolicy.IGNORE)
     WishlistEntity toWishlistEntity(WishlistCreateRequestDto dto);
 
     WishlistUpdateRequest toWishlistUpdateRequest(WishlistUpdateRequestDto dto);

@@ -11,7 +11,7 @@ services:
         condition: service_started
 
     ports:
-      - ${AUTHENTICATION_SERVICE_EXTERNAL_PORT}
+      - "${AUTHENTICATION_SERVICE_EXTERNAL_PORT}:${SERVER_INNER_PORT}"
 
     volumes:
       - ./.security/keystore.p12:/app/resources/keystore.p12:ro
@@ -34,7 +34,7 @@ services:
       POSTGRES_DB: cohenrol_auth_db
 
     ports:
-      - "${AUTHENTICATION_DB_EXTERNAL_PORT}"
+      - "${AUTHENTICATION_DB_EXTERNAL_PORT}:${DB_INNER_PORT}"
 
     volumes:
       - auth-db-data:/var/lib/postgresql

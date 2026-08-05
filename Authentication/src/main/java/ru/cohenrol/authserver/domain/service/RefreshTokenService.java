@@ -58,7 +58,7 @@ public class RefreshTokenService {
         User user = oldRefreshToken.getUser();
         String userName = user.getUsername();
         RefreshResponse refreshResponse = new RefreshResponse(
-                jwtProvider.generateAccessToken(userName),
+                jwtProvider.generateAccessToken(user.getUuid()),
                 generateRefreshToken(user),
                 userName
         );

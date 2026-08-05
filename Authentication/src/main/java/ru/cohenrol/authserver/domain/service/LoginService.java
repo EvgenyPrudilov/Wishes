@@ -40,7 +40,7 @@ public class LoginService {
         }
 
         LoginResponse loginResponse = new LoginResponse(
-            jwtProvider.generateAccessToken(userName),
+            jwtProvider.generateAccessToken(user.getUuid()),
             refreshTokenService.generateRefreshToken(user),
             userName
         );

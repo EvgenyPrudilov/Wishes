@@ -10,6 +10,7 @@ import ru.cohenrol.profile.datasource.model.WishlistEntity;
 import ru.cohenrol.profile.datasource.model.WishlistSettingsEntity;
 import ru.cohenrol.profile.datasource.repository.ItemRepository;
 import ru.cohenrol.profile.client.ProfileServiceClient;
+import ru.cohenrol.profile.domain.exception.inner.*;
 import ru.cohenrol.profile.domain.mapper.DomainMapper;
 import ru.cohenrol.profile.domain.model.ItemUpdateRequest;
 import ru.cohenrol.profile.web.model.ItemCreateRequestDto;
@@ -27,9 +28,9 @@ public class ItemService {
     @Transactional(readOnly = true)
     public ItemEntity getAndValidateItem(UUID wishlistId, UUID itemId) {
         ItemEntity item = itemRepository.findByItemId(itemId)
-            .orElseThrow(() -> new IllegalArgumentException("Item not found"));
+            .orElseThrow(ItemNotFoundException::new);
         if (!item.getWishlist().getWishlistId().equals(wishlistId)) {
-            throw new IllegalArgumentException("Item does not belong to this wishlist");
+            throw new ItemNotFromWishlistException();
         }
         return item;
     }
@@ -41,15 +42,15 @@ public class ItemService {
         return item;
     }
 
-    @Transactional
-    public ItemEntity reserveItem(UUID wishlistId, UUID itemId) {
-        ItemEntity item = getAndValidateItem(wishlistId, itemId);
-        if (item.isReserved()) {
-            throw new IllegalStateException("Item already reserved");
-        }
-        item.setReserved(true);
-        return itemRepository.save(item);
-    }
+//    @Transactional
+//    public ItemEntity reserveItem(UUID wishlistId, UUID itemId) {
+//        ItemEntity item = getAndValidateItem(wishlistId, itemId);
+//        if (item.isReserved()) {
+//            throw new ItemAlreadyReservedException();
+//        }
+//        item.setReserved(true);
+//        return itemRepository.save(item);
+//    }
 
     @Transactional
     public void addItem(UUID authorizedUserId, UUID wishlistId, ItemCreateRequestDto dto) {
@@ -94,13 +95,13 @@ public class ItemService {
     public void reserveItem(UUID authorizedUserId, UUID wishlistId, UUID itemId, String reservedBy) {
         ItemEntity item = getAndValidateItem(wishlistId, itemId);
         if (item.isReserved()) {
-            throw new IllegalStateException("Item already reserved");
+            throw new ItemAlreadyReservedException();
         }
 
         WishlistEntity wishlist = item.getWishlist();
         WishlistSettingsEntity settings = wishlist.getSettings();
         if (settings.getBookingPrivacy() == BookingPermission.FRIENDS) {
-            if (authorizedUserId == null || profileServiceClient.checkFriendship(authorizedUserId, wishlist.getUserId())) {
+            if (authorizedUserId == null || profileServiceClient.checkFriendship(authorizedUserId, wishlist.getUserId()) == false) {
                 throw new RuntimeException("Not friend");
             }
         }
@@ -117,14 +118,14 @@ public class ItemService {
     public void unreserveItemAsAuthorized(UUID authorizedUserId, UUID wishlistId, UUID itemId) {
         ItemEntity item = getAndValidateItem(wishlistId, itemId);
         if (!item.isReserved()) {
-            throw new IllegalStateException("Item not reserved");
+            throw new ItemNotReservedException();
         }
 
         WishlistEntity wishlist = item.getWishlist();
         WishlistSettingsEntity settings = wishlist.getSettings();
         if (settings.getBookingPrivacy() == BookingPermission.FRIENDS) {
             if (authorizedUserId == null || authorizedUserId != item.getReservedBy()) {
-                throw new RuntimeException("Not friend");
+                throw new NotFriendException();
             }
         }
 
